@@ -16,6 +16,7 @@
     "paths": {
       "@components/*": ["src/components/*"],
     },
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",
