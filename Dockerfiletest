@@ -1,5 +1,6 @@
-FROM node:18-alpine
-LABEL maintainer="vinicius.bonifacio1985@gmail.com"
+# ======== Stage 1: Build environment ========
+FROM node:18-alpine AS builder
+LABEL maintainer="vinicius@choicely.com"
 
 RUN apk add --update git \
 python3 \
@@ -8,24 +9,29 @@ curl \
 g++ && \
 rm -rf /tmp/* /var/cache/apk/*
 
-# Create app directory
 RUN mkdir -p /src
 WORKDIR /src
 
-# Install app dependencies
-ADD package.json /src/
+COPY package.json yarn.lock /src/
 
 RUN yarn
 
-# Bundle app source
-ADD . /src/
+COPY . /src/
 
 # For Node 17
-
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
 RUN yarn run build
 
-CMD ["yarn", "start" ]
+# ======== Stage 2: Runtime environment ======== 
+FROM node:18-alpine
+
+RUN apk add --no-cache yarn
+
+WORKDIR /app
+
+COPY --from=builder /src/ /app
 
 EXPOSE 8080
+
+CMD ["yarn", "start"]
