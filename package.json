@@ -12,26 +12,23 @@
     "test": "jest --config=jest.config.js",
     "test:watch": "jest --config=jest.config.js --watch",
     "test:coverage": "jest --config=jest.config.js --coverage",
-    "prepare": "husky install"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rkoziol/react-typescript-jest-boilerplate.git"
+    "prepare": "husky install",
+    "release:patch": "standard-version --release-as patch --skip.changelog --skip.commit --skip.tag && standard-version --prerelease super-mario --release-as patch && git add .",
+    "release:minor": "standard-version --release-as minor --skip.changelog --skip.commit --skip.tag && standard-version --prerelease super-metroid --release-as patch && git add .",
+    "release:major": "standard-version --release-as major --skip.changelog --skip.commit --skip.tag && standard-version --prerelease smash-bros --release-as patch && git add ."
   },
   "keywords": [
     "react",
     "typescript",
     "javascript",
     "jest",
-    "boilerplate",
-    "rkoziol"
+    "boilerplate"
   ],
-  "author": "rkoziol",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rkoziol/react-typescript-jest-boilerplate/issues"
+  "standard-version": {
+    "scripts": {
+      "postchangelog": "replace '\\[([^)]+)\\]\\(([^)]+)\\)' '$1' CHANGELOG.md"
+    }
   },
-  "homepage": "https://github.com/rkoziol/react-typescript-jest-boilerplate#readme",
   "lint-staged": {
     "*.{js,ts,tsx}": [
       "eslint --fix"
@@ -75,6 +72,7 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-router-dom": "6.3.0",
-    "react-test-renderer": "18.0.0"
+    "react-test-renderer": "18.0.0",
+    "standard-version": "9.5.0"
   }
 }

@@ -1,0 +1,22 @@
+# Running ./run on command line will build a container from Dockerfilesand image and run it on PORT 8080 (http://localhost:8080)
+# Prerequisites: Docker and Yarn installed locally
+
+echo
+echo Sandbox Dockerfiletest
+
+now=$(date +%Y%m%d%H%M%S)
+user=$(whoami)
+
+docker build -t local-image:$now-$user -f Dockerfilesand .
+docker run --name local-test-container -d -p 8080:8080 local-image:$now-$user
+
+echo
+sleep 15
+
+echo Sandbox is now running at localhost:8080
+#  ======= Commom DOCKER commands ==========:
+# - Remove all containeres: $ docker rm -f $(docker ps -a -q)
+# - List all containeres: $ docker ps -a
+# - Stop container: $ docker stop PID
+# - Remove container by PID: $ docker rm PID
+# - Force stop and delete container: $ docker rm -f PID

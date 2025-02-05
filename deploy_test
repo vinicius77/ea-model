@@ -1,0 +1,10 @@
+now=$(date +%Y%m%d%H%M%S)
+user=$(whoami)
+image=gcr.io/react-77-firebase/testing:$now-$user
+gcloud config configurations activate react-77-firebase
+docker build -t $image -f Dockerfiletest .
+docker push $image
+gcloud run deploy test --image $image --region europe-north1 --project react-77-firebase
+
+echo
+echo "Finished!""

@@ -1,0 +1,30 @@
+# ======== Stage 1: Build environment ========
+FROM node:18-alpine AS builder
+LABEL maintainer="vinicius@choicely.com"
+
+RUN mkdir -p /src
+WORKDIR /src
+
+COPY package.json yarn.lock /src/
+
+RUN yarn install
+
+COPY . /src/
+
+# For Node 17
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
+RUN yarn run build
+
+# ======== Stage 2: Runtime environment ======== 
+FROM node:18-alpine
+
+RUN apk add --no-cache yarn
+
+WORKDIR /app
+
+COPY --from=builder /src/ /app
+
+EXPOSE 8080
+
+CMD ["yarn", "start"]
